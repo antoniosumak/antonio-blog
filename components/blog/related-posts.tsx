@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { BlogPost } from "@/lib/blog-shared";
 
 // Generate a deterministic gradient from the slug
@@ -37,8 +38,18 @@ export function RelatedPosts({ posts }: { posts: BlogPost[] }) {
           >
             {/* Thumbnail */}
             <div
-              className={`aspect-video w-full shrink-0 overflow-hidden rounded-lg border border-grid-border bg-gradient-to-br ${getGradient(post.slug)} sm:w-[200px]`}
-            />
+              className={`aspect-video w-full shrink-0 overflow-hidden rounded-lg border border-grid-border sm:w-[200px] ${post.heroImage ? "" : `bg-gradient-to-br ${getGradient(post.slug)}`}`}
+            >
+              {post.heroImage && (
+                <Image
+                  src={post.heroImage}
+                  alt={post.title}
+                  width={400}
+                  height={225}
+                  className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                />
+              )}
+            </div>
 
             {/* Info */}
             <div className="flex flex-col justify-center">

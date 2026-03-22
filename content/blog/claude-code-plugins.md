@@ -1,4 +1,4 @@
-# Blog Post: 10 Claude Code Plugins That Actually Matter (And the One Rule for Picking Them)
+# 10 Claude Code Plugins That Actually Matter (And the One Rule for Picking Them)
 ## Target Keyword: Claude Code plugins
 ## Secondary Keywords: Claude Code CLI tools, Claude Code MCP vs CLI, AI coding agent plugins
 ## Word Count Target: 1200

@@ -1,4 +1,4 @@
-# Blog Post: AI Evals Are the Most Important Skill You're Probably Ignoring
+# AI Evals Are the Most Important Skill You're Probably Ignoring
 ## Target Keyword: AI evals for product builders
 ## Secondary Keywords: how to evaluate AI products, LLM evaluation, AI product development
 ## Word Count Target: 800-1500
