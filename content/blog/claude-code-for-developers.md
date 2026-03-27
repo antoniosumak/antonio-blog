@@ -39,7 +39,7 @@ Everything Claude Code knows about your project lives in `.claude/` at the proje
 
 Here's what the structure looks like:
 
-```
+```text
 your-project/
 ├── CLAUDE.md                    # Project instructions
 ├── .mcp.json                    # MCP server configs
@@ -68,25 +68,24 @@ The separation matters: `.claude/settings.json` is for team standards. `.claude/
 
 CLAUDE.md is a Markdown file Claude loads at the start of every session. Think of it as the README your AI reads instead of a human.
 
-Put in things Claude can't figure out by reading the code. Build and test commands. Naming conventions. Architecture decisions. Non-obvious constraints. Decision trees for common scenarios.
+Put in things Claude can't figure out by reading the code. Architecture decisions and the reasoning behind them. Non-obvious constraints. Deployment gotchas. Decision trees for common scenarios. Skip the stuff that's already in `package.json` or visible in the source. Claude can read those.
 
 ```markdown
 # Project: E-commerce API
 
-## Tech Stack
-- Node.js 20, Express, PostgreSQL, Redis
-- Testing: Vitest + Supertest
-- Linting: ESLint with Airbnb config
+## Architecture Decisions
+- Orders service is eventually consistent. Don't expect immediate read-after-write on order status.
+- Auth uses short-lived JWTs (15 min) + refresh tokens. Never store sessions server-side.
+- All prices stored as integers (cents). Never use floats for money.
 
-## Commands
-- `npm run dev` — start dev server on port 3000
-- `npm test` — run all tests
-- `npm run lint:fix` — auto-fix linting issues
+## Non-Obvious Constraints
+- The payments webhook endpoint must respond within 5 seconds or Stripe retries
+- Rate limiter on /api/auth/* is 10 req/min per IP. Don't disable it in tests, use the test bypass header instead: `X-Test-Bypass: {RATE_LIMIT_SECRET}`
+- Database migrations run on deploy. They must be backwards-compatible because old and new code runs simultaneously during rollout.
 
-## Conventions
-- All endpoints use Zod for input validation
-- Error responses: `{ error: string, code: string }`
-- Database migrations go in migrations/ and must be idempotent
+## When Confused
+- If a test fails on CI but passes locally, check that you're using the test database seed in `scripts/seed-test.sh`
+- If you're unsure whether a change needs a migration, it does
 ```
 
 Keep it under 200 lines. This isn't a rule for aesthetics. Claude's adherence to CLAUDE.md instructions drops significantly after ~200 lines. If your file grows past that, break it into topic files in `.claude/rules/`.
